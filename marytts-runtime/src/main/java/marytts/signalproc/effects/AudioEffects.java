@@ -20,42 +20,42 @@
 package marytts.signalproc.effects;
 
 import java.util.ArrayList;
-
 import marytts.server.MaryProperties;
+import marytts.util.LoaderConfig;
 
 /**
  * @author marc
  *
  */
 public class AudioEffects {
-	private static ArrayList<AudioEffect> effects = initialiseEffects();
+   private static ArrayList<AudioEffect> effects = initialiseEffects();
 
-	private static ArrayList<AudioEffect> initialiseEffects() {
-		ArrayList<AudioEffect> effs = new ArrayList<AudioEffect>();
-		for (String className : MaryProperties.effectClasses()) {
-			try {
-				effs.add((AudioEffect) Class.forName(className).newInstance());
-			} catch (Exception e) {
-				throw new Error("Cannot set up effect class '" + className + "'", e);
-			}
-		}
-		return effs;
-	}
+   private static ArrayList<AudioEffect> initialiseEffects() {
+      ArrayList<AudioEffect> effs = new ArrayList<AudioEffect>();
+      for (String className : MaryProperties.effectClasses()) {
+         try {
+            effs.add((AudioEffect) LoaderConfig.newInstance(className));
+         } catch (Exception e) {
+            throw new Error("Cannot set up effect class '" + className + "'", e);
+         }
+      }
+      return effs;
+   }
 
-	public static Iterable<AudioEffect> getEffects() {
-		return effects;
-	}
+   public static Iterable<AudioEffect> getEffects() {
+      return effects;
+   }
 
-	public static int countEffects() {
-		return effects.size();
-	}
+   public static int countEffects() {
+      return effects.size();
+   }
 
-	public static AudioEffect getEffect(String name) {
-		for (AudioEffect effect : getEffects()) {
-			if (effect.getName().equals(name)) {
-				return effect;
-			}
-		}
-		return null;
-	}
+   public static AudioEffect getEffect(String name) {
+      for (AudioEffect effect : getEffects()) {
+         if (effect.getName().equals(name)) {
+            return effect;
+         }
+      }
+      return null;
+   }
 }

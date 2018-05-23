@@ -33,6 +33,7 @@ import java.util.Set;
 import marytts.exceptions.MaryConfigurationException;
 import marytts.modules.phonemiser.AllophoneSet;
 import marytts.server.MaryProperties;
+import marytts.util.LoaderConfig;
 import marytts.util.io.PropertiesAccessor;
 import marytts.util.io.PropertiesTrimTrailingWhitespace;
 import org.apache.commons.lang.StringUtils;
@@ -44,7 +45,8 @@ import org.apache.commons.lang.StringUtils;
 public abstract class MaryConfig {
    private static ServiceLoader<MaryConfig> configLoader = ServiceLoader.load(MaryConfig.class);
 
-   public static void resetConfigLoader(ClassLoader loader) {
+   public static void resetConfigLoader() {
+      ClassLoader loader = LoaderConfig.getInstance().getClassLoader();
       configLoader = ServiceLoader.load(MaryConfig.class, loader);
    }
 

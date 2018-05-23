@@ -70,7 +70,9 @@ public class MaryRuntimeUtils {
    }
 
    public static void ensureMaryStarted(ClassLoader loader) throws Exception {
-      MaryConfig.resetConfigLoader(loader);
+      LoaderConfig config = LoaderConfig.getInstance();
+      config.setClassLoader(loader);
+      MaryConfig.resetConfigLoader();
       synchronized (MaryConfig.getMainConfig()) {
          if (Mary.currentState() == Mary.STATE_OFF) {
             Mary.startup();
@@ -114,7 +116,7 @@ public class MaryRuntimeUtils {
          } else { // no arguments
             className = objectInitInfo;
          }
-         Class<? extends Object> theClass = Class.forName(className).asSubclass(Object.class);
+         Class<? extends Object> theClass = LoaderConfig.getClass(className).asSubclass(Object.class);
          // Now invoke Constructor with args.length String arguments
          if (args != null) {
             Class<String>[] constructorArgTypes = new Class[args.length];
